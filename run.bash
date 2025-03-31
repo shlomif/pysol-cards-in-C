@@ -10,5 +10,5 @@ set -e -x
 
 export PYTHONPATH="`pwd`"
 # make
-./call.exe multiply multiply 3 8
-./call.exe multiply multiply 200 3
+./call.exe multiply pythonish_multiply 3 8
+./call.exe multiply pythonish_multiply 200 3

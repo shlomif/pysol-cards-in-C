@@ -1,7 +1,7 @@
 # from pysol_cards.deal_game import Game
 
 
-def multiply(a, b):
+def pythonish_multiply(a, b):
     print("Will compute", a, "times", b)
     c = 0
     for i in range(0, a):
