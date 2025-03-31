@@ -1,4 +1,4 @@
-from pysol_cards.deal_game import Game
+# from pysol_cards.deal_game import Game
 
 
 def multiply(a, b):
@@ -12,4 +12,4 @@ def multiply(a, b):
 class Gen:
     def __init__(self):
         self.game_variant = 'black_hole'
-        self.game = Game(self.game_variant, 1, self.which_deals, 13)
+        # self.game = Game(self.game_variant, 1, self.which_deals, 13)
