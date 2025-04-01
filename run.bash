@@ -28,7 +28,11 @@ got()
     ./call.exe "$deal"
 }
 
-for (( i = 1; i <= 50; i++ ))
-do
-    diff -u <(expected "${i}") <(got "${i}")
-done
+(
+    set +x
+
+    for (( i = 1; i <= 50; i++ ))
+    do
+        diff -u <(expected "${i}") <(got "${i}")
+    done
+)
