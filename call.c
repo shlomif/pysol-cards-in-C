@@ -8,15 +8,15 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     PyObject *pName, *pModule, *pFunc;
     PyObject *pArgs, *pValue;
     int i;
 
-    if (argc < 3) {
-        fprintf(stderr,"Usage: call pythonfile funcname [args]\n");
+    if (argc < 3)
+    {
+        fprintf(stderr, "Usage: call pythonfile funcname [args]\n");
         return 1;
     }
 
@@ -31,17 +31,21 @@ main(int argc, char *argv[])
     pModule = PyImport_Import(pName);
     Py_DECREF(pName);
 
-    if (pModule != NULL) {
+    if (pModule != NULL)
+    {
         // pFunc = PyObject_GetAttrString(pModule, argv[2]);
         pFunc = PyObject_GetAttrString(pModule, "create_gen");
         /* pFunc is a new reference */
 
-        if (pFunc && PyCallable_Check(pFunc)) {
+        if (pFunc && PyCallable_Check(pFunc))
+        {
 #ifdef OLD
             pArgs = PyTuple_New(argc - 3);
-            for (i = 0; i < argc - 3; ++i) {
+            for (i = 0; i < argc - 3; ++i)
+            {
                 pValue = PyLong_FromLong(atoi(argv[i + 3]));
-                if (!pValue) {
+                if (!pValue)
+                {
                     Py_DECREF(pArgs);
                     Py_DECREF(pModule);
                     fprintf(stderr, "Cannot convert argument\n");
@@ -52,12 +56,14 @@ main(int argc, char *argv[])
             }
 #else
             pArgs = PyTuple_New(1);
-            for (i = 0; i < 1; ++i) {
-                pValue = ((i == 0) ? (PyUnicode_FromString("black_hole")):
-                    (
+            for (i = 0; i < 1; ++i)
+            {
+                pValue = ((i == 0) ? (PyUnicode_FromString("black_hole"))
+                                   : (
 
-                PyLong_FromLong(24)));
-                if (!pValue) {
+                                         PyLong_FromLong(24)));
+                if (!pValue)
+                {
                     Py_DECREF(pArgs);
                     Py_DECREF(pModule);
                     fprintf(stderr, "Cannot convert argument\n");
@@ -69,15 +75,17 @@ main(int argc, char *argv[])
 #endif
             pValue = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pArgs);
-            PyObject * pArgs_gen = PyTuple_New(1);
-            if (pValue != NULL) {
-                PyObject * pFunc_gen = pValue;
+            PyObject *pArgs_gen = PyTuple_New(1);
+            if (pValue != NULL)
+            {
+                PyObject *pFunc_gen = pValue;
                 pArgs = PyTuple_New(1);
-                for (i = 0; i < 1; ++i) {
-                    PyObject * pValue_gen = ((i == 0) ?
-                        (
-                            PyLong_FromLong(24)) : NULL);
-                    if (!pValue_gen) {
+                for (i = 0; i < 1; ++i)
+                {
+                    PyObject *pValue_gen =
+                        ((i == 0) ? (PyLong_FromLong(24)) : NULL);
+                    if (!pValue_gen)
+                    {
                         Py_DECREF(pArgs);
                         Py_DECREF(pModule);
                         fprintf(stderr, "Cannot convert argument\n");
@@ -87,11 +95,12 @@ main(int argc, char *argv[])
                     PyTuple_SetItem(pArgs_gen, i, pValue_gen);
                 }
                 pValue = PyObject_CallObject(pFunc_gen, pArgs_gen);
-                const char* ret_str = PyUnicode_AsUTF8(pValue);
+                const char *ret_str = PyUnicode_AsUTF8(pValue);
                 printf("Result of call: %s\n", ret_str);
                 Py_DECREF(pValue);
             }
-            else {
+            else
+            {
                 Py_DECREF(pFunc);
                 Py_DECREF(pModule);
                 PyErr_Print();
@@ -99,7 +108,8 @@ main(int argc, char *argv[])
                 return 1;
             }
         }
-        else {
+        else
+        {
             if (PyErr_Occurred())
                 PyErr_Print();
             fprintf(stderr, "Cannot find function \"%s\"\n", argv[2]);
@@ -107,12 +117,14 @@ main(int argc, char *argv[])
         Py_XDECREF(pFunc);
         Py_DECREF(pModule);
     }
-    else {
+    else
+    {
         PyErr_Print();
         fprintf(stderr, "Failed to load \"%s\"\n", argv[1]);
         return 1;
     }
-    if (Py_FinalizeEx() < 0) {
+    if (Py_FinalizeEx() < 0)
+    {
         return 120;
     }
     return 0;
