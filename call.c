@@ -21,11 +21,7 @@ int main(int argc, char *argv[])
     }
 
     Py_Initialize();
-#ifdef OLD
-    pName = PyUnicode_DecodeFSDefault(argv[1]);
-#else
     pName = PyUnicode_DecodeFSDefault("multiply");
-#endif
     /* Error checking of pName left out */
 
     pModule = PyImport_Import(pName);
@@ -39,22 +35,6 @@ int main(int argc, char *argv[])
 
         if (pFunc && PyCallable_Check(pFunc))
         {
-#ifdef OLD
-            pArgs = PyTuple_New(argc - 3);
-            for (i = 0; i < argc - 3; ++i)
-            {
-                pValue = PyLong_FromLong(atoi(argv[i + 3]));
-                if (!pValue)
-                {
-                    Py_DECREF(pArgs);
-                    Py_DECREF(pModule);
-                    fprintf(stderr, "Cannot convert argument\n");
-                    return 1;
-                }
-                /* pValue reference stolen here: */
-                PyTuple_SetItem(pArgs, i, pValue);
-            }
-#else
             pArgs = PyTuple_New(1);
             for (i = 0; i < 1; ++i)
             {
@@ -72,7 +52,6 @@ int main(int argc, char *argv[])
                 /* pValue reference stolen here: */
                 PyTuple_SetItem(pArgs, i, pValue);
             }
-#endif
             pValue = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pArgs);
             if (pValue != NULL)
