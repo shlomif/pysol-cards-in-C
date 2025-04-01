@@ -9,6 +9,11 @@ def pythonish_multiply(a, b):
     return c
 
 
+def gen_pysol_deal(game_variant, deal_idx):
+    from pysol_cards.deal_game import Game
+    return "[]"
+
+
 class Gen:
     def __init__(self):
         self.game_variant = 'black_hole'
