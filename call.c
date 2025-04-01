@@ -32,10 +32,12 @@ main(int argc, char *argv[])
     Py_DECREF(pName);
 
     if (pModule != NULL) {
-        pFunc = PyObject_GetAttrString(pModule, argv[2]);
+        // pFunc = PyObject_GetAttrString(pModule, argv[2]);
+        pFunc = PyObject_GetAttrString(pModule, "gen_pysol_deal");
         /* pFunc is a new reference */
 
         if (pFunc && PyCallable_Check(pFunc)) {
+#ifdef OLD
             pArgs = PyTuple_New(argc - 3);
             for (i = 0; i < argc - 3; ++i) {
                 pValue = PyLong_FromLong(atoi(argv[i + 3]));
@@ -48,17 +50,35 @@ main(int argc, char *argv[])
                 /* pValue reference stolen here: */
                 PyTuple_SetItem(pArgs, i, pValue);
             }
+#else
+            pArgs = PyTuple_New(2);
+            for (i = 0; i < 2; ++i) {
+                pValue = ((i == 0) ? (PyUnicode_FromString("black_hole")):
+                    (
+
+                PyLong_FromLong(24)));
+                if (!pValue) {
+                    Py_DECREF(pArgs);
+                    Py_DECREF(pModule);
+                    fprintf(stderr, "Cannot convert argument\n");
+                    return 1;
+                }
+                /* pValue reference stolen here: */
+                PyTuple_SetItem(pArgs, i, pValue);
+            }
+#endif
             pValue = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pArgs);
             if (pValue != NULL) {
-                printf("Result of call: %ld\n", PyLong_AsLong(pValue));
+                const char* ret_str = PyUnicode_AsUTF8(pValue);
+                printf("Result of call: %s\n", ret_str);
                 Py_DECREF(pValue);
             }
             else {
                 Py_DECREF(pFunc);
                 Py_DECREF(pModule);
                 PyErr_Print();
-                fprintf(stderr,"Call failed\n");
+                fprintf(stderr, "Call failed\n");
                 return 1;
             }
         }
