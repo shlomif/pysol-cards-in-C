@@ -15,3 +15,20 @@ printf "%s\\n" "${PYTHONPATH}"
 # make
 ./call.exe 3 8
 ./call.exe 200 3
+
+expected()
+{
+    local deal="$1"
+    make_pysol_freecell_board.py -t "$deal" black_hole
+}
+
+got()
+{
+    local deal="$1"
+    ./call.exe "$deal"
+}
+
+for (( i = 1; i <= 50; i++ ))
+do
+    diff -u <(expected "${i}") <(got "${i}")
+done

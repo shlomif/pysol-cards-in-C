@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     PyObject *pArgs, *pValue;
     int i;
 
-    if (argc < 3)
+    if (argc < 2)
     {
         fprintf(stderr, "Usage: call pythonfile funcname [args]\n");
         return 1;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
                     }
                     pValue = PyObject_CallObject(pFunc_gen, pArgs_gen);
                     const char *ret_str = PyUnicode_AsUTF8(pValue);
-                    printf("Result of call: %s\n", ret_str);
+                    printf("%s", ret_str);
                     Py_DECREF(pValue);
                 }
             }
