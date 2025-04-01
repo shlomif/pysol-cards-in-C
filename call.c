@@ -21,7 +21,11 @@ main(int argc, char *argv[])
     }
 
     Py_Initialize();
+#ifdef OLD
     pName = PyUnicode_DecodeFSDefault(argv[1]);
+#else
+    pName = PyUnicode_DecodeFSDefault("multiply");
+#endif
     /* Error checking of pName left out */
 
     pModule = PyImport_Import(pName);
