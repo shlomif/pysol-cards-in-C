@@ -13,5 +13,5 @@ export PYTHONPATH="`pwd`"
 PYTHONPATH+=":${pyp}"
 printf "%s\\n" "${PYTHONPATH}"
 # make
-./call.exe multiply pythonish_multiply 3 8
-./call.exe multiply pythonish_multiply 200 3
+./call.exe 3 8
+./call.exe 200 3
