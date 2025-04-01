@@ -33,7 +33,7 @@ main(int argc, char *argv[])
 
     if (pModule != NULL) {
         // pFunc = PyObject_GetAttrString(pModule, argv[2]);
-        pFunc = PyObject_GetAttrString(pModule, "gen_pysol_deal");
+        pFunc = PyObject_GetAttrString(pModule, "create_gen");
         /* pFunc is a new reference */
 
         if (pFunc && PyCallable_Check(pFunc)) {
@@ -51,8 +51,8 @@ main(int argc, char *argv[])
                 PyTuple_SetItem(pArgs, i, pValue);
             }
 #else
-            pArgs = PyTuple_New(2);
-            for (i = 0; i < 2; ++i) {
+            pArgs = PyTuple_New(1);
+            for (i = 0; i < 1; ++i) {
                 pValue = ((i == 0) ? (PyUnicode_FromString("black_hole")):
                     (
 
@@ -69,7 +69,24 @@ main(int argc, char *argv[])
 #endif
             pValue = PyObject_CallObject(pFunc, pArgs);
             Py_DECREF(pArgs);
+            PyObject * pArgs_gen = PyTuple_New(1);
             if (pValue != NULL) {
+                PyObject * pFunc_gen = pValue;
+                pArgs = PyTuple_New(1);
+                for (i = 0; i < 1; ++i) {
+                    PyObject * pValue_gen = ((i == 0) ?
+                        (
+                            PyLong_FromLong(24)) : NULL);
+                    if (!pValue_gen) {
+                        Py_DECREF(pArgs);
+                        Py_DECREF(pModule);
+                        fprintf(stderr, "Cannot convert argument\n");
+                        return 1;
+                    }
+                    /* pValue reference stolen here: */
+                    PyTuple_SetItem(pArgs_gen, i, pValue_gen);
+                }
+                pValue = PyObject_CallObject(pFunc_gen, pArgs_gen);
                 const char* ret_str = PyUnicode_AsUTF8(pValue);
                 printf("Result of call: %s\n", ret_str);
                 Py_DECREF(pValue);
