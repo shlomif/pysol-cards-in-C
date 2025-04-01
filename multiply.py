@@ -9,8 +9,8 @@ def pythonish_multiply(a, b):
     return c
 
 
+from pysol_cards.deal_game import Game
 def gen_pysol_deal(game_variant, deal_idx):
-    from pysol_cards.deal_game import Game
     return "[]"
 
 
