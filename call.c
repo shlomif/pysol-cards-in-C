@@ -29,7 +29,6 @@ int global_python_instance__init(
 int main(int argc, char *argv[])
 {
     PyObject *pValue;
-    int i;
 
     if (argc < 2)
     {
@@ -49,12 +48,10 @@ int main(int argc, char *argv[])
     if (pFunc && PyCallable_Check(pFunc))
     {
         PyObject *const pArgs = PyTuple_New(1);
-        for (i = 0; i < 1; ++i)
+        for (int i = 0; i < 1; ++i)
         {
             pValue = ((i == 0) ? (PyUnicode_FromString("black_hole"))
-                               : (
-
-                                     PyLong_FromLong(24)));
+                               : (PyLong_FromLong(24)));
             if (!pValue)
             {
                 Py_DECREF(pArgs);
@@ -79,7 +76,7 @@ int main(int argc, char *argv[])
         for (int argvidx = 1; argvidx < argc; ++argvidx)
         {
             PyObject *pArgs_gen = PyTuple_New(1);
-            for (i = 0; i < 1; ++i)
+            for (int i = 0; i < 1; ++i)
             {
                 PyObject *pValue_gen =
                     ((i == 0) ? (PyLong_FromLong(atoi(argv[argvidx]))) : NULL);
