@@ -66,40 +66,37 @@ int main(int argc, char *argv[])
         }
         pValue = PyObject_CallObject(pFunc, pArgs);
         Py_DECREF(pArgs);
-        if (pValue != NULL)
-        {
-            PyObject *pFunc_gen = pValue;
-            for (int argvidx = 1; argvidx < argc; ++argvidx)
-            {
-                PyObject *pArgs_gen = PyTuple_New(1);
-                for (i = 0; i < 1; ++i)
-                {
-                    PyObject *pValue_gen =
-                        ((i == 0) ? (PyLong_FromLong(atoi(argv[argvidx])))
-                                  : NULL);
-                    if (!pValue_gen)
-                    {
-                        Py_DECREF(pArgs);
-                        Py_DECREF(global_python->pModule);
-                        fprintf(stderr, "Cannot convert argument\n");
-                        return 1;
-                    }
-                    /* pValue reference stolen here: */
-                    PyTuple_SetItem(pArgs_gen, i, pValue_gen);
-                }
-                PyObject *const pRetString = PyObject_CallObject(pFunc_gen, pArgs_gen);
-                const char *ret_str = PyUnicode_AsUTF8(pRetString);
-                printf("%s", ret_str);
-                Py_DECREF(pRetString);
-            }
-        }
-        else
+        if (!pValue)
         {
             Py_DECREF(pFunc);
             Py_DECREF(global_python->pModule);
             PyErr_Print();
             fprintf(stderr, "Call failed\n");
             return 1;
+        }
+        PyObject *pFunc_gen = pValue;
+        for (int argvidx = 1; argvidx < argc; ++argvidx)
+        {
+            PyObject *pArgs_gen = PyTuple_New(1);
+            for (i = 0; i < 1; ++i)
+            {
+                PyObject *pValue_gen =
+                    ((i == 0) ? (PyLong_FromLong(atoi(argv[argvidx]))) : NULL);
+                if (!pValue_gen)
+                {
+                    Py_DECREF(pArgs);
+                    Py_DECREF(global_python->pModule);
+                    fprintf(stderr, "Cannot convert argument\n");
+                    return 1;
+                }
+                /* pValue reference stolen here: */
+                PyTuple_SetItem(pArgs_gen, i, pValue_gen);
+            }
+            PyObject *const pRetString =
+                PyObject_CallObject(pFunc_gen, pArgs_gen);
+            const char *ret_str = PyUnicode_AsUTF8(pRetString);
+            printf("%s", ret_str);
+            Py_DECREF(pRetString);
         }
     }
     else
