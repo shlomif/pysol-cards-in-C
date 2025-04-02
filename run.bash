@@ -47,8 +47,6 @@ got()
     eval "./call.exe {${s}..${e}}"
 }
 
-got 2
-
 (
     set +x
 
