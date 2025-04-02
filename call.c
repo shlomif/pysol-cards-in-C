@@ -72,10 +72,10 @@ int main(int argc, char *argv[])
         }
         for (int argvidx = 1; argvidx < argc; ++argvidx)
         {
-            PyObject *pArgs_gen = PyTuple_New(1);
+            PyObject *const pArgs_gen = PyTuple_New(1);
             for (int i = 0; i < 1; ++i)
             {
-                PyObject *pValue_gen =
+                PyObject *const pValue_gen =
                     ((i == 0) ? (PyLong_FromLong(atoi(argv[argvidx]))) : NULL);
                 if (!pValue_gen)
                 {
