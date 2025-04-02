@@ -19,18 +19,21 @@ printf "%s\\n" "${PYTHONPATH}"
 _start()
 {
     local deal="$1"
+    shift
     printf "%d" "$(expr "$deal" '*' 5 + 1)"
 }
 
 _end()
 {
     local deal="$1"
+    shift
     printf "%d" "$(expr "$deal" '*' 5 + 4)"
 }
 
 expected()
 {
     local deal="$1"
+    shift
     local s="$(_start "$deal")"
     local e="$(_end "$deal")"
     for (( i = s; i <= e; i++ ))
@@ -42,6 +45,7 @@ expected()
 got()
 {
     local deal="$1"
+    shift
     local s="$(_start "$deal")"
     local e="$(_end "$deal")"
     eval "./call.exe {${s}..${e}}"
