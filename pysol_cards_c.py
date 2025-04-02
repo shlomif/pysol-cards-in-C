@@ -1,5 +1,3 @@
-# from pysol_cards.deal_game import Game
-
 from pysol_cards.cards import CardRenderer
 from pysol_cards.deal_game import Game
 from pysol_cards.random import RandomBase
