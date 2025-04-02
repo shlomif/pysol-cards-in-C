@@ -4,20 +4,8 @@
 //
 // Distributed under the terms of the MIT license.
 //
-
-#define PY_SSIZE_T_CLEAN
-#include <Python.h>
-
-enum
-{
-    SUCCESS = 0,
-    FAIL = 1,
-};
-
-typedef struct
-{
-    PyObject *pModule;
-} global_python_instance_type;
+//
+#include "embed_python.h"
 
 int global_python_instance__init(
     global_python_instance_type *const global_python)
@@ -46,11 +34,11 @@ int main(int argc, char *argv[])
 
     if (argc < 2)
     {
-        fprintf(stderr, "Usage: call pythonfile funcname [args]\n");
+        fprintf(stderr, "Usage: call ./call.exe [deals]\n");
         return 1;
     }
     global_python_instance_type global_python_struct;
-    global_python_instance_type * global_python = &global_python_struct;
+    global_python_instance_type *global_python = &global_python_struct;
     global_python_instance__init(global_python);
 
     // pFunc = PyObject_GetAttrString(pModule, argv[2]);
