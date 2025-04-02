@@ -49,8 +49,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < 1; ++i)
         {
             PyObject *const create_gen_param =
-                ((i == 0) ? (PyUnicode_FromString("black_hole"))
-                          : (PyLong_FromLong(24)));
+                ((i == 0) ? (PyUnicode_FromString("black_hole")) : NULL);
             if (!create_gen_param)
             {
                 Py_DECREF(pArgs);
