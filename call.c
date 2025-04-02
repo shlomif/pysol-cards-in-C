@@ -4,7 +4,8 @@
 //
 // Distributed under the terms of the MIT license.
 //
-//
+// Based on https://docs.python.org/3/extending/embedding.html . Thanks!
+
 #include "embed_python.h"
 
 int global_python_instance__init(
