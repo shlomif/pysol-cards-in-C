@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     PyObject *const pFunc =
         PyObject_GetAttrString(global_python->pModule, "create_gen");
     /* pFunc is a new reference */
-    char board_string[3 * 4 * 13 * 2 * 2];
+    char board_string[BOARD_STRING_SIZE];
 
     if (pFunc && PyCallable_Check(pFunc))
     {

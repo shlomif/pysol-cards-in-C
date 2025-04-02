@@ -4,6 +4,7 @@
  *
  * Distributed under terms of the MIT license.
  */
+
 #pragma once
 
 #define PY_SSIZE_T_CLEAN
@@ -19,6 +20,15 @@ typedef struct
 {
     PyObject *pModule;
 } global_python_instance_type;
+
+#define NUM_CARDS_DECKS 2
+#define NUM_CARDS_RANKS 13
+#define NUM_CARDS_SUITS 4
+#define NUM_CHARS_PER_CARD 3
+#define BOARD_STRING_MARGIN 512
+#define BOARD_STRING_SIZE                                                      \
+    (BOARD_STRING_MARGIN + NUM_CARDS_RANKS * NUM_CARDS_SUITS *                 \
+                               NUM_CARDS_DECKS * NUM_CHARS_PER_CARD)
 
 extern int global_python_instance__init(
     global_python_instance_type *const global_python);
