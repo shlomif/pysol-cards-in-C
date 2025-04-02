@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
     PyObject *const pFunc =
         PyObject_GetAttrString(global_python->pModule, "create_gen");
     /* pFunc is a new reference */
+    char board_string[3 * 4 * 13 * 2 * 2];
 
     if (pFunc && PyCallable_Check(pFunc))
     {
@@ -95,7 +96,8 @@ int main(int argc, char *argv[])
             PyObject *const pRetString =
                 PyObject_CallObject(pFunc_gen, pArgs_gen);
             const char *ret_str = PyUnicode_AsUTF8(pRetString);
-            printf("%s", ret_str);
+            strcpy(board_string, ret_str);
+            printf("%s", board_string);
             Py_DECREF(pRetString);
         }
     }
