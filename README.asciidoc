@@ -1,0 +1,3 @@
+== ABOUT
+
+Embed https://github.com/shlomif/pysol_cards[pysol_cards] inside '-std=gnu11' C code.
