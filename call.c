@@ -28,7 +28,7 @@ int global_python_instance__init(
 
 int main(int argc, char *argv[])
 {
-    PyObject *pArgs, *pValue;
+    PyObject *pValue;
     int i;
 
     if (argc < 2)
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     if (pFunc && PyCallable_Check(pFunc))
     {
-        pArgs = PyTuple_New(1);
+        PyObject *const pArgs = PyTuple_New(1);
         for (i = 0; i < 1; ++i)
         {
             pValue = ((i == 0) ? (PyUnicode_FromString("black_hole"))
