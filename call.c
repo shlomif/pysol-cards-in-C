@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     global_python_instance_type *global_python = &global_python_struct;
     global_python_instance__init(global_python);
 
-    // pFunc = PyObject_GetAttrString(pModule, argv[2]);
     PyObject *const pFunc =
         PyObject_GetAttrString(global_python->pModule, "create_gen");
     /* pFunc is a new reference */

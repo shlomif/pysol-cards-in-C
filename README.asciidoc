@@ -1,8 +1,12 @@
 == ABOUT
 
-Embed https://github.com/shlomif/pysol_cards[pysol_cards] inside '-std=gnu11' C code.
+Embed https://github.com/shlomif/pysol_cards[pysol_cards] inside '-std=gnu11' C
+code. Using it, You can generate initial layouts of PySol FC deals, in C for
+use by C apps and libraries, by embedding python in C
 
-____
+----
 gmake run
-____
+deal_idx="24"
+./call.exe "${deal_idx}"
+----
 
