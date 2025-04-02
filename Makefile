@@ -17,7 +17,7 @@ clean:
 
 rebuild: clean all
 
-rerun: run rebuild
+rerun: rebuild run
 
 # vim:ft=make
 #
