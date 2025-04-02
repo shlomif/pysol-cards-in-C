@@ -28,7 +28,6 @@ int global_python_instance__init(
 
 int main(int argc, char *argv[])
 {
-    PyObject *pFunc;
     PyObject *pArgs, *pValue;
     int i;
 
@@ -42,7 +41,8 @@ int main(int argc, char *argv[])
     global_python_instance__init(global_python);
 
     // pFunc = PyObject_GetAttrString(pModule, argv[2]);
-    pFunc = PyObject_GetAttrString(global_python->pModule, "create_gen");
+    PyObject *const pFunc =
+        PyObject_GetAttrString(global_python->pModule, "create_gen");
     /* pFunc is a new reference */
 
     if (pFunc && PyCallable_Check(pFunc))
