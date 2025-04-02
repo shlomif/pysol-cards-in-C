@@ -28,8 +28,6 @@ int global_python_instance__init(
 
 int main(int argc, char *argv[])
 {
-    PyObject *pValue;
-
     if (argc < 2)
     {
         fprintf(stderr, "Usage: call ./call.exe [deals]\n");
@@ -50,21 +48,22 @@ int main(int argc, char *argv[])
         PyObject *const pArgs = PyTuple_New(1);
         for (int i = 0; i < 1; ++i)
         {
-            pValue = ((i == 0) ? (PyUnicode_FromString("black_hole"))
-                               : (PyLong_FromLong(24)));
-            if (!pValue)
+            PyObject *const create_gen_param =
+                ((i == 0) ? (PyUnicode_FromString("black_hole"))
+                          : (PyLong_FromLong(24)));
+            if (!create_gen_param)
             {
                 Py_DECREF(pArgs);
                 Py_DECREF(global_python->pModule);
                 fprintf(stderr, "Cannot convert argument\n");
                 return 1;
             }
-            /* pValue reference stolen here: */
-            PyTuple_SetItem(pArgs, i, pValue);
+            /* create_gen_param reference stolen here: */
+            PyTuple_SetItem(pArgs, i, create_gen_param);
         }
-        pValue = PyObject_CallObject(pFunc, pArgs);
+        PyObject *const pFunc_gen = PyObject_CallObject(pFunc, pArgs);
         Py_DECREF(pArgs);
-        if (!pValue)
+        if (!pFunc_gen)
         {
             Py_DECREF(pFunc);
             Py_DECREF(global_python->pModule);
@@ -72,7 +71,6 @@ int main(int argc, char *argv[])
             fprintf(stderr, "Call failed\n");
             return 1;
         }
-        PyObject *pFunc_gen = pValue;
         for (int argvidx = 1; argvidx < argc; ++argvidx)
         {
             PyObject *pArgs_gen = PyTuple_New(1);
@@ -87,7 +85,7 @@ int main(int argc, char *argv[])
                     fprintf(stderr, "Cannot convert argument\n");
                     return 1;
                 }
-                /* pValue reference stolen here: */
+                /* pValue_gen reference stolen here: */
                 PyTuple_SetItem(pArgs_gen, i, pValue_gen);
             }
             PyObject *const pRetString =
