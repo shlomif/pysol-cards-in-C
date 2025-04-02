@@ -72,27 +72,17 @@ int main(int argc, char *argv[])
         }
         for (int argvidx = 1; argvidx < argc; ++argvidx)
         {
-            PyObject *const pArgs_gen = PyTuple_New(1);
-            for (int i = 0; i < 1; ++i)
+            const long deal_idx = atoi(argv[argvidx]);
+            const int ret_code =
+                pysol_cards__deal(board_string, pFunc_gen, deal_idx);
+            if (ret_code)
             {
-                PyObject *const pValue_gen =
-                    ((i == 0) ? (PyLong_FromLong(atoi(argv[argvidx]))) : NULL);
-                if (!pValue_gen)
-                {
-                    Py_DECREF(pArgs);
-                    Py_DECREF(global_python->pModule);
-                    fprintf(stderr, "Cannot convert argument\n");
-                    return 1;
-                }
-                /* pValue_gen reference stolen here: */
-                PyTuple_SetItem(pArgs_gen, i, pValue_gen);
+                Py_DECREF(pArgs);
+                Py_DECREF(global_python->pModule);
+                fprintf(stderr, "Cannot convert argument\n");
+                return FAIL;
             }
-            PyObject *const pRetString =
-                PyObject_CallObject(pFunc_gen, pArgs_gen);
-            const char *ret_str = PyUnicode_AsUTF8(pRetString);
-            strcpy(board_string, ret_str);
             printf("%s", board_string);
-            Py_DECREF(pRetString);
         }
     }
     else
