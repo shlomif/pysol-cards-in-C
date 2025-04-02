@@ -28,7 +28,7 @@ int global_python_instance__init(
 
 int main(int argc, char *argv[])
 {
-    PyObject *pName, *pFunc;
+    PyObject *pFunc;
     PyObject *pArgs, *pValue;
     int i;
 
