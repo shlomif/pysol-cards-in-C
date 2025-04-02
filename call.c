@@ -87,10 +87,10 @@ int main(int argc, char *argv[])
                     /* pValue reference stolen here: */
                     PyTuple_SetItem(pArgs_gen, i, pValue_gen);
                 }
-                pValue = PyObject_CallObject(pFunc_gen, pArgs_gen);
-                const char *ret_str = PyUnicode_AsUTF8(pValue);
+                PyObject *const pRetString = PyObject_CallObject(pFunc_gen, pArgs_gen);
+                const char *ret_str = PyUnicode_AsUTF8(pRetString);
                 printf("%s", ret_str);
-                Py_DECREF(pValue);
+                Py_DECREF(pRetString);
             }
         }
         else
