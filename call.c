@@ -13,7 +13,7 @@ int global_python_instance__init(
 {
     Py_Initialize();
     const char *const modname = "pysol_cards_c";
-    PyObject *pName = PyUnicode_DecodeFSDefault(modname);
+    PyObject *const pName = PyUnicode_DecodeFSDefault(modname);
     /* Error checking of pName left out */
 
     global_python->pModule = PyImport_Import(pName);

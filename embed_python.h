@@ -40,7 +40,7 @@ static int pysol_cards__deal(
     }
 
     PyObject *const pRetString = PyObject_CallObject(pFunc_gen, pArgs_gen);
-    const char *ret_str = PyUnicode_AsUTF8(pRetString);
+    const char *const ret_str = PyUnicode_AsUTF8(pRetString);
     strcpy(board_string, ret_str);
     Py_DECREF(pRetString);
 
