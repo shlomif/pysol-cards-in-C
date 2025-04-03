@@ -77,8 +77,21 @@ int main(int argc, char *argv[])
     }
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
-        long startidx = atoi(argv[argvidx]);
-        long endidx = startidx;
+        char *const arg = argv[argvidx];
+        long startidx, endidx;
+        if (!strcmp(arg, "seq"))
+        {
+            if (argvidx + 2 + 0 >= argc)
+            {
+                exit(1);
+            }
+            startidx = atol(argv[++argvidx]);
+            endidx = atol(argv[++argvidx]);
+        }
+        else
+        {
+            endidx = startidx = atol(arg);
+        }
         for (long deal_idx = startidx; deal_idx <= endidx; ++deal_idx)
         {
             const int ret_code =
