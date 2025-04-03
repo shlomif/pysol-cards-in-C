@@ -77,17 +77,21 @@ int main(int argc, char *argv[])
     }
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
-        const long deal_idx = atoi(argv[argvidx]);
-        const int ret_code =
-            pysol_cards__deal(board_string, pFunc_gen, deal_idx);
-        if (ret_code)
+        long startidx = atoi(argv[argvidx]);
+        long endidx = startidx;
+        for (long deal_idx = startidx; deal_idx <= endidx; ++deal_idx)
         {
-            Py_DECREF(pArgs);
-            Py_DECREF(global_python->pModule);
-            fprintf(stderr, "Cannot convert argument\n");
-            return FAIL;
+            const int ret_code =
+                pysol_cards__deal(board_string, pFunc_gen, deal_idx);
+            if (ret_code)
+            {
+                Py_DECREF(pArgs);
+                Py_DECREF(global_python->pModule);
+                fprintf(stderr, "Cannot convert argument\n");
+                return FAIL;
+            }
+            printf("%s", board_string);
         }
-        printf("%s", board_string);
     }
     Py_XDECREF(pFunc);
 
