@@ -29,9 +29,9 @@ int global_python_instance__init(
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
+    if (argc < 3)
     {
-        fprintf(stderr, "Usage: call ./call.exe [deals]\n");
+        fprintf(stderr, "Usage: call ./call.exe [game] [deals]\n");
         return 1;
     }
     global_python_instance_type global_python_struct;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < 1; ++i)
         {
             PyObject *const create_gen_param =
-                ((i == 0) ? (PyUnicode_FromString("black_hole")) : NULL);
+                ((i == 0) ? (PyUnicode_FromString(argv[1])) : NULL);
             if (!create_gen_param)
             {
                 Py_DECREF(pArgs);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
             fprintf(stderr, "Call failed\n");
             return 1;
         }
-        for (int argvidx = 1; argvidx < argc; ++argvidx)
+        for (int argvidx = 2; argvidx < argc; ++argvidx)
         {
             const long deal_idx = atoi(argv[argvidx]);
             const int ret_code =
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     {
         if (PyErr_Occurred())
             PyErr_Print();
-        fprintf(stderr, "Cannot find function \"%s\"\n", argv[2]);
+        fprintf(stderr, "Cannot find game_variant \"%s\"\n", argv[2]);
     }
     Py_XDECREF(pFunc);
     Py_DECREF(global_python->pModule);

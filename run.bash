@@ -7,14 +7,16 @@
 #
 
 set -e -x
+wrapperexe=./pysol_cards_wrap
 
 pyp="${HOME}/.local/lib/python3.13/site-packages"
 export PYTHONPATH="`pwd`"
 PYTHONPATH+=":${pyp}"
 printf "%s\\n" "${PYTHONPATH}"
 # make
-./call.exe 3 8
-./call.exe 200 3
+
+"${wrapperexe}" black_hole 3 8
+"${wrapperexe}" black_hole 200 3
 
 _start()
 {
@@ -48,7 +50,7 @@ got()
     shift
     local s="$(_start "$deal")"
     local e="$(_end "$deal")"
-    eval "./call.exe {${s}..${e}}"
+    eval "\"${wrapperexe}\" black_hole {${s}..${e}}"
 }
 
 (
