@@ -50,11 +50,11 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Cannot find game_variant \"%s\"\n", argv[2]);
         goto cleanup_module;
     }
-    PyObject *const pArgs = PyTuple_New(1);
-    for (int i = 0; i < 1; ++i)
+    PyObject *const pArgs = PyTuple_New(2);
+    for (int i = 0; i < 2; ++i)
     {
         PyObject *const create_gen_param =
-            ((i == 0) ? (PyUnicode_FromString(argv[1])) : NULL);
+            ((i == 0) ? (PyUnicode_FromString(argv[1])) : (PyLong_FromLong(0)));
         if (!create_gen_param)
         {
             Py_DECREF(pArgs);
