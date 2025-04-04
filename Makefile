@@ -18,12 +18,16 @@ $(WRAPPEREXE) : call.c
 run: all
 	bash run.bash
 
+test: run
+
 clean:
 	rm -f $(WRAPPEREXE)
 
 rebuild: clean all
 
 rerun: rebuild run
+
+retest: rerun
 
 # vim:ft=make
 #
