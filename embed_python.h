@@ -12,8 +12,8 @@
 
 enum
 {
-    SUCCESS = 0,
-    FAIL = 1,
+    PYSOL_CARDS__SUCCESS = 0,
+    PYSOL_CARDS__FAIL = 1,
 };
 
 typedef struct
@@ -40,7 +40,7 @@ static int pysol_cards__deal(
     PyObject *const pValue_gen = (PyLong_FromLong(deal_idx));
     if (!pValue_gen)
     {
-        return FAIL;
+        return PYSOL_CARDS__FAIL;
     }
     /* pValue_gen reference stolen here: */
     PyTuple_SetItem(pArgs_gen, 0, pValue_gen);
@@ -51,5 +51,5 @@ static int pysol_cards__deal(
     Py_DECREF(pArgs_gen);
     Py_DECREF(pRetString);
 
-    return SUCCESS;
+    return PYSOL_CARDS__SUCCESS;
 }

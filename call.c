@@ -21,10 +21,10 @@ int global_python_instance__init(
     {
         PyErr_Print();
         fprintf(stderr, "Failed to load \"%s\"\n", modname);
-        exit(FAIL);
+        exit(PYSOL_CARDS__FAIL);
     }
     Py_DECREF(pName);
-    return SUCCESS;
+    return PYSOL_CARDS__SUCCESS;
 }
 
 int main(int argc, char *argv[])
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
             Py_DECREF(pArgs);
             Py_DECREF(global_python->pModule);
             fprintf(stderr, "Cannot convert argument\n");
-            return FAIL;
+            return PYSOL_CARDS__FAIL;
         }
         /* create_gen_param reference stolen here: */
         PyTuple_SetItem(pArgs, i, create_gen_param);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         Py_DECREF(global_python->pModule);
         PyErr_Print();
         fprintf(stderr, "Call failed\n");
-        return FAIL;
+        return PYSOL_CARDS__FAIL;
     }
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
                 Py_DECREF(pArgs);
                 Py_DECREF(global_python->pModule);
                 fprintf(stderr, "Cannot convert argument\n");
-                return FAIL;
+                return PYSOL_CARDS__FAIL;
             }
             printf("%s", board_string);
             if ((deal_idx & ((1 << 12) - 1)) == 0)
@@ -120,5 +120,5 @@ cleanup_module:
     {
         return 120;
     }
-    return SUCCESS;
+    return PYSOL_CARDS__SUCCESS;
 }
