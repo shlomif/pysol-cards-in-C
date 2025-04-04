@@ -33,6 +33,39 @@ typedef struct
 extern int global_python_instance__init(
     global_python_instance_type *const global_python);
 
+static PyObject *pysol_cards__create_generator(
+    global_python_instance_type *const global_python, PyObject *const func,
+    const char *const game_variant, int msdeals)
+{
+    PyObject *const pArgs = PyTuple_New(2);
+    for (int i = 0; i < 2; ++i)
+    {
+        PyObject *const create_gen_param =
+            ((i == 0) ? (PyUnicode_FromString(game_variant))
+                      : (PyLong_FromLong(msdeals)));
+        if (!create_gen_param)
+        {
+            Py_DECREF(pArgs);
+            Py_DECREF(global_python->pModule);
+            fprintf(stderr, "Cannot convert argument\n");
+            exit(PYSOL_CARDS__FAIL);
+        }
+        /* create_gen_param reference stolen here: */
+        PyTuple_SetItem(pArgs, i, create_gen_param);
+    }
+    PyObject *const pFunc_gen = PyObject_CallObject(func, pArgs);
+    Py_DECREF(pArgs);
+    if (!pFunc_gen)
+    {
+        Py_DECREF(func);
+        Py_DECREF(global_python->pModule);
+        PyErr_Print();
+        fprintf(stderr, "Call failed\n");
+        exit(PYSOL_CARDS__FAIL);
+    }
+    return pFunc_gen;
+}
+
 static int pysol_cards__deal(
     char *const board_string, PyObject *const pFunc_gen, const long deal_idx)
 {

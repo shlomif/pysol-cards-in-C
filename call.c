@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     global_python_instance_type global_python_struct;
-    global_python_instance_type *global_python = &global_python_struct;
+    global_python_instance_type *const global_python = &global_python_struct;
     global_python_instance__init(global_python);
 
     PyObject *const pFunc =
@@ -50,31 +50,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Cannot find game_variant \"%s\"\n", argv[2]);
         goto cleanup_module;
     }
-    PyObject *const pArgs = PyTuple_New(2);
-    for (int i = 0; i < 2; ++i)
-    {
-        PyObject *const create_gen_param =
-            ((i == 0) ? (PyUnicode_FromString(argv[1])) : (PyLong_FromLong(0)));
-        if (!create_gen_param)
-        {
-            Py_DECREF(pArgs);
-            Py_DECREF(global_python->pModule);
-            fprintf(stderr, "Cannot convert argument\n");
-            return PYSOL_CARDS__FAIL;
-        }
-        /* create_gen_param reference stolen here: */
-        PyTuple_SetItem(pArgs, i, create_gen_param);
-    }
-    PyObject *const pFunc_gen = PyObject_CallObject(pFunc, pArgs);
-    Py_DECREF(pArgs);
-    if (!pFunc_gen)
-    {
-        Py_DECREF(pFunc);
-        Py_DECREF(global_python->pModule);
-        PyErr_Print();
-        fprintf(stderr, "Call failed\n");
-        return PYSOL_CARDS__FAIL;
-    }
+    PyObject *const pFunc_gen =
+        pysol_cards__create_generator(global_python, pFunc, argv[1], 0);
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
         char *const arg = argv[argvidx];
@@ -98,7 +75,6 @@ int main(int argc, char *argv[])
                 pysol_cards__deal(board_string, pFunc_gen, deal_idx);
             if (ret_code)
             {
-                Py_DECREF(pArgs);
                 Py_DECREF(global_python->pModule);
                 fprintf(stderr, "Cannot convert argument\n");
                 return PYSOL_CARDS__FAIL;

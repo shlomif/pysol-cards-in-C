@@ -4,7 +4,6 @@
 #
 
 WRAPPEREXE = pysol_cards_wrap
-# $(WRAPPEREXE)
 
 all: $(WRAPPEREXE)
 
