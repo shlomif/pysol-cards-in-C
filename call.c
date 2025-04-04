@@ -104,6 +104,11 @@ int main(int argc, char *argv[])
                 return FAIL;
             }
             printf("%s", board_string);
+            if ((deal_idx & ((1 << 12) - 1)) == 0)
+            {
+                fprintf(stderr, "Reached %ld\n", deal_idx);
+                fflush(stderr);
+            }
         }
     }
     Py_XDECREF(pFunc);
