@@ -24,7 +24,7 @@ int global_python_instance__init(
         exit(FAIL);
     }
     Py_DECREF(pName);
-    return 0;
+    return SUCCESS;
 }
 
 int main(int argc, char *argv[])
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
             Py_DECREF(pArgs);
             Py_DECREF(global_python->pModule);
             fprintf(stderr, "Cannot convert argument\n");
-            return 1;
+            return FAIL;
         }
         /* create_gen_param reference stolen here: */
         PyTuple_SetItem(pArgs, i, create_gen_param);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         Py_DECREF(global_python->pModule);
         PyErr_Print();
         fprintf(stderr, "Call failed\n");
-        return 1;
+        return FAIL;
     }
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
@@ -120,5 +120,5 @@ cleanup_module:
     {
         return 120;
     }
-    return 0;
+    return SUCCESS;
 }
