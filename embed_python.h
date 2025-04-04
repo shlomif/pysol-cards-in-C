@@ -30,8 +30,24 @@ typedef struct
     (BOARD_STRING_MARGIN + NUM_CARDS_RANKS * NUM_CARDS_SUITS *                 \
                                NUM_CARDS_DECKS * NUM_CHARS_PER_CARD)
 
-extern int global_python_instance__init(
-    global_python_instance_type *const global_python);
+static int global_python_instance__init(
+    global_python_instance_type *const global_python)
+{
+    Py_Initialize();
+    const char *const modname = "pysol_cards_c";
+    PyObject *const pName = PyUnicode_DecodeFSDefault(modname);
+    /* Error checking of pName left out */
+
+    global_python->pModule = PyImport_Import(pName);
+    if (!global_python->pModule)
+    {
+        PyErr_Print();
+        fprintf(stderr, "Failed to load \"%s\"\n", modname);
+        exit(PYSOL_CARDS__FAIL);
+    }
+    Py_DECREF(pName);
+    return PYSOL_CARDS__SUCCESS;
+}
 
 static PyObject *pysol_cards__create_generator(
     global_python_instance_type *const global_python, PyObject *const func,

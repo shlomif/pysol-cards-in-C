@@ -8,25 +8,6 @@
 
 #include "embed_python.h"
 
-int global_python_instance__init(
-    global_python_instance_type *const global_python)
-{
-    Py_Initialize();
-    const char *const modname = "pysol_cards_c";
-    PyObject *const pName = PyUnicode_DecodeFSDefault(modname);
-    /* Error checking of pName left out */
-
-    global_python->pModule = PyImport_Import(pName);
-    if (!global_python->pModule)
-    {
-        PyErr_Print();
-        fprintf(stderr, "Failed to load \"%s\"\n", modname);
-        exit(PYSOL_CARDS__FAIL);
-    }
-    Py_DECREF(pName);
-    return PYSOL_CARDS__SUCCESS;
-}
-
 int main(int argc, char *argv[])
 {
     if (argc < 3)
