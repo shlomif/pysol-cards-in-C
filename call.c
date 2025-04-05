@@ -13,26 +13,18 @@ int main(int argc, char *argv[])
     if (argc < 3)
     {
         fprintf(stderr, "Usage: call ./call.exe [game] [deals]\n");
-        return 1;
+        return PYSOL_CARDS__FAIL;
     }
     global_python_instance_type global_python_struct;
     global_python_instance_type *const global_python = &global_python_struct;
     global_python_instance__init(global_python);
-
-    PyObject *const pFunc =
-        PyObject_GetAttrString(global_python->pModule, "create_gen");
-    /* pFunc is a new reference */
+    pysol_cards__master_instance_type master_instance_struct;
+    pysol_cards__master_instance_type *const master_instance =
+        &master_instance_struct;
+    pysol_cards__master_instance_init(master_instance, global_python);
     char board_string[BOARD_STRING_SIZE];
-
-    if (!(pFunc && PyCallable_Check(pFunc)))
-    {
-        if (PyErr_Occurred())
-            PyErr_Print();
-        fprintf(stderr, "Cannot find game_variant \"%s\"\n", argv[2]);
-        goto cleanup_module;
-    }
-    PyObject *const pFunc_gen =
-        pysol_cards__create_generator(global_python, pFunc, argv[1], 0);
+    PyObject *const pFunc_gen = pysol_cards__create_generator(
+        global_python, master_instance->create_gen, argv[1], 0);
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
         char *const arg = argv[argvidx];
@@ -68,9 +60,9 @@ int main(int argc, char *argv[])
             }
         }
     }
-    Py_XDECREF(pFunc);
+    Py_XDECREF(master_instance->create_gen);
 
-cleanup_module:
+    // cleanup_module:
     Py_DECREF(global_python->pModule);
 
     if (Py_FinalizeEx() < 0)

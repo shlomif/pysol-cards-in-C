@@ -21,6 +21,30 @@ typedef struct
     PyObject *pModule;
 } global_python_instance_type;
 
+typedef struct
+{
+    PyObject *create_gen;
+} pysol_cards__master_instance_type;
+
+static int pysol_cards__master_instance_init(
+    pysol_cards__master_instance_type *const master_instance,
+    global_python_instance_type *const global_python)
+{
+    PyObject *const create_gen =
+        PyObject_GetAttrString(global_python->pModule, "create_gen");
+    /* create_gen is a new reference */
+
+    if (!(create_gen && PyCallable_Check(create_gen)))
+    {
+        if (PyErr_Occurred())
+            PyErr_Print();
+        fprintf(stderr, "Cannot access create_gen() \"%s\"\n", "pysol_cards_c");
+        exit(PYSOL_CARDS__FAIL);
+    }
+    master_instance->create_gen = create_gen;
+    return PYSOL_CARDS__SUCCESS;
+}
+
 #define NUM_CARDS_DECKS 2
 #define NUM_CARDS_RANKS 13
 #define NUM_CARDS_SUITS 4
