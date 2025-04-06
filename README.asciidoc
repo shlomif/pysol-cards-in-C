@@ -7,7 +7,8 @@ use by C apps and libraries, by embedding python in C
 ----
 gmake run
 deal_idx="24"
-./call.exe "${deal_idx}"
+game_variant="black_hole"
+./pysol_cards_wrap "${game_variant}" "${deal_idx}"
 ----
 
 It is derived from https://docs.python.org/3/extending/embedding.html (Thanks!).
