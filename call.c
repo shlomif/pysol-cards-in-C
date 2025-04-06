@@ -23,8 +23,9 @@ int main(int argc, char *argv[])
         &master_instance_struct;
     pysol_cards__master_instance_init(master_instance, global_python);
     char board_string[BOARD_STRING_SIZE];
-    PyObject *const pFunc_gen = pysol_cards__create_generator(
-        global_python, master_instance->create_gen, argv[1], 0);
+    pysol_cards__generator_type generator;
+    pysol_cards__create_generator(
+        &generator, global_python, master_instance->create_gen, argv[1], 0);
     for (int argvidx = 2; argvidx < argc; ++argvidx)
     {
         char *const arg = argv[argvidx];
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
         for (long deal_idx = startidx; deal_idx <= endidx; ++deal_idx)
         {
             const int ret_code =
-                pysol_cards__deal(board_string, pFunc_gen, deal_idx);
+                pysol_cards__deal(board_string, generator.generator, deal_idx);
             if (ret_code)
             {
                 Py_DECREF(global_python->pModule);

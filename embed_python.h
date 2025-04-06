@@ -73,7 +73,12 @@ static int global_python_instance__init(
     return PYSOL_CARDS__SUCCESS;
 }
 
-static PyObject *pysol_cards__create_generator(
+typedef struct
+{
+    PyObject *generator;
+} pysol_cards__generator_type;
+
+static void pysol_cards__create_generator(pysol_cards__generator_type *out,
     global_python_instance_type *const global_python, PyObject *const func,
     const char *const game_variant, int msdeals)
 {
@@ -93,9 +98,9 @@ static PyObject *pysol_cards__create_generator(
         /* create_gen_param reference stolen here: */
         PyTuple_SetItem(pArgs, i, create_gen_param);
     }
-    PyObject *const pFunc_gen = PyObject_CallObject(func, pArgs);
+    PyObject *const generator_func = PyObject_CallObject(func, pArgs);
     Py_DECREF(pArgs);
-    if (!pFunc_gen)
+    if (!generator_func)
     {
         Py_DECREF(func);
         Py_DECREF(global_python->pModule);
@@ -103,11 +108,11 @@ static PyObject *pysol_cards__create_generator(
         fprintf(stderr, "Call failed\n");
         exit(PYSOL_CARDS__FAIL);
     }
-    return pFunc_gen;
+    out->generator = generator_func;
 }
 
-static int pysol_cards__deal(
-    char *const board_string, PyObject *const pFunc_gen, const long deal_idx)
+static int pysol_cards__deal(char *const board_string,
+    PyObject *const generator_func, const long deal_idx)
 {
     PyObject *const pArgs_gen = PyTuple_New(1);
     PyObject *const pValue_gen = (PyLong_FromLong(deal_idx));
@@ -118,7 +123,7 @@ static int pysol_cards__deal(
     /* pValue_gen reference stolen here: */
     PyTuple_SetItem(pArgs_gen, 0, pValue_gen);
 
-    PyObject *const pRetString = PyObject_CallObject(pFunc_gen, pArgs_gen);
+    PyObject *const pRetString = PyObject_CallObject(generator_func, pArgs_gen);
     const char *const ret_str = PyUnicode_AsUTF8(pRetString);
     strcpy(board_string, ret_str);
     Py_DECREF(pArgs_gen);
