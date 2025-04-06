@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         for (long deal_idx = startidx; deal_idx <= endidx; ++deal_idx)
         {
             const int ret_code =
-                pysol_cards__deal(board_string, generator.generator, deal_idx);
+                pysol_cards__deal(&generator, board_string, deal_idx);
             if (ret_code)
             {
                 Py_DECREF(global_python->pModule);

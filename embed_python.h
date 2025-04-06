@@ -111,8 +111,8 @@ static void pysol_cards__create_generator(pysol_cards__generator_type *out,
     out->generator = generator_func;
 }
 
-static int pysol_cards__deal(char *const board_string,
-    PyObject *const generator_func, const long deal_idx)
+static int pysol_cards__deal(pysol_cards__generator_type *const generator,
+    char *const board_string, const long deal_idx)
 {
     PyObject *const pArgs_gen = PyTuple_New(1);
     PyObject *const pValue_gen = (PyLong_FromLong(deal_idx));
@@ -123,7 +123,8 @@ static int pysol_cards__deal(char *const board_string,
     /* pValue_gen reference stolen here: */
     PyTuple_SetItem(pArgs_gen, 0, pValue_gen);
 
-    PyObject *const pRetString = PyObject_CallObject(generator_func, pArgs_gen);
+    PyObject *const pRetString =
+        PyObject_CallObject(generator->generator, pArgs_gen);
     const char *const ret_str = PyUnicode_AsUTF8(pRetString);
     strcpy(board_string, ret_str);
     Py_DECREF(pArgs_gen);
