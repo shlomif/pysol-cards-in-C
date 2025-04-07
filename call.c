@@ -63,13 +63,5 @@ int main(int argc, char *argv[])
     }
     pysol_cards__master_instance_release(master_instance);
     global_python_instance__release(global_python);
-
-    // cleanup_module:
-    Py_DECREF(global_python->pModule);
-
-    if (Py_FinalizeEx() < 0)
-    {
-        return 120;
-    }
     return PYSOL_CARDS__SUCCESS;
 }
