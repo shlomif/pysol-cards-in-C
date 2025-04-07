@@ -46,8 +46,7 @@ static int pysol_cards__master_instance_init(
 }
 
 static void pysol_cards__master_instance_release(
-    pysol_cards__master_instance_type *const master_instance
-)
+    pysol_cards__master_instance_type *const master_instance)
 {
     Py_XDECREF(master_instance->create_gen);
     master_instance->create_gen = NULL;
