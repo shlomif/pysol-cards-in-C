@@ -45,6 +45,14 @@ static int pysol_cards__master_instance_init(
     return PYSOL_CARDS__SUCCESS;
 }
 
+static void pysol_cards__master_instance_release(
+    pysol_cards__master_instance_type *const master_instance
+)
+{
+    Py_XDECREF(master_instance->create_gen);
+    master_instance->create_gen = NULL;
+}
+
 #define NUM_CARDS_DECKS 2
 #define NUM_CARDS_RANKS 13
 #define NUM_CARDS_SUITS 4

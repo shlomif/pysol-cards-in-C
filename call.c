@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
         }
     }
     Py_XDECREF(master_instance->create_gen);
+    pysol_cards__master_instance_release(master_instance);
 
     // cleanup_module:
     Py_DECREF(global_python->pModule);
