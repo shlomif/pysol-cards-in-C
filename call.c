@@ -7,6 +7,12 @@
 // Based on https://docs.python.org/3/extending/embedding.html . Thanks!
 
 #include "embed_python.h"
+#include <stdbool.h>
+#include <signal.h>
+
+static volatile bool keep_running = true;
+
+static void sigint_handler(int dummy) { keep_running = false; }
 
 int main(int argc, char *argv[])
 {
@@ -23,10 +29,11 @@ int main(int argc, char *argv[])
         &master_instance_struct;
     pysol_cards__master_instance_init(master_instance, global_python);
     char board_string[BOARD_STRING_SIZE];
+    signal(SIGINT, sigint_handler);
     pysol_cards__generator_type generator;
     pysol_cards__create_generator(
         &generator, global_python, master_instance->create_gen, argv[1], 0);
-    for (int argvidx = 2; argvidx < argc; ++argvidx)
+    for (int argvidx = 2; keep_running && (argvidx < argc); ++argvidx)
     {
         char *const arg = argv[argvidx];
         long startidx, endidx;
@@ -43,7 +50,8 @@ int main(int argc, char *argv[])
         {
             endidx = startidx = atol(arg);
         }
-        for (long deal_idx = startidx; deal_idx <= endidx; ++deal_idx)
+        for (long deal_idx = startidx; keep_running && (deal_idx <= endidx);
+            ++deal_idx)
         {
             const int ret_code =
                 pysol_cards__deal(&generator, board_string, deal_idx);
