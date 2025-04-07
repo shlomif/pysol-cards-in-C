@@ -45,6 +45,17 @@ static int pysol_cards__master_instance_init(
     return PYSOL_CARDS__SUCCESS;
 }
 
+static int global_python_instance__release(
+    global_python_instance_type *const global_python)
+{
+    Py_DECREF(global_python->pModule);
+
+    if (Py_FinalizeEx() < 0)
+    {
+        return 120;
+    }
+}
+
 static void pysol_cards__master_instance_release(
     pysol_cards__master_instance_type *const master_instance)
 {
