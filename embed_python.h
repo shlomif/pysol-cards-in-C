@@ -132,21 +132,21 @@ static void pysol_cards__create_generator(pysol_cards__generator_type *out,
 static int pysol_cards__deal(pysol_cards__generator_type *const generator,
     char *const board_string, const long deal_idx)
 {
-    PyObject *const pArgs_gen = PyTuple_New(1);
-    PyObject *const pValue_gen = (PyLong_FromLong(deal_idx));
-    if (!pValue_gen)
+    PyObject *const generator_args = PyTuple_New(1);
+    PyObject *const py__deal_idx = (PyLong_FromLong(deal_idx));
+    if (!py__deal_idx)
     {
         return PYSOL_CARDS__FAIL;
     }
-    /* pValue_gen reference stolen here: */
-    PyTuple_SetItem(pArgs_gen, 0, pValue_gen);
+    /* py__deal_idx reference stolen here: */
+    PyTuple_SetItem(generator_args, 0, py__deal_idx);
 
-    PyObject *const pRetString =
-        PyObject_CallObject(generator->generator, pArgs_gen);
-    const char *const ret_str = PyUnicode_AsUTF8(pRetString);
+    PyObject *const py__ret_string =
+        PyObject_CallObject(generator->generator, generator_args);
+    const char *const ret_str = PyUnicode_AsUTF8(py__ret_string);
     strcpy(board_string, ret_str);
-    Py_DECREF(pArgs_gen);
-    Py_DECREF(pRetString);
+    Py_DECREF(generator_args);
+    Py_DECREF(py__ret_string);
 
     return PYSOL_CARDS__SUCCESS;
 }
