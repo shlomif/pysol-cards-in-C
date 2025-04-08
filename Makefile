@@ -9,10 +9,12 @@ all: $(WRAPPEREXE)
 
 PYVER = 3.13
 COMMON_OPT_FLAGS := -O3 -march=native
+CFLAGS = ` python3-config --cflags ` $(COMMON_OPT_FLAGS)
+LDFLAGS = ` python3-config --ldflags --libs ` -l python$(PYVER)
 
 $(WRAPPEREXE) : call.c
-	# gcc ` python3-config --cflags ` $(COMMON_OPT_FLAGS) -Wall -Wextra -o $@ $< ` python3-config --ldflags --libs ` -l python$(PYVER)
-	clang ` python3-config --cflags ` $(COMMON_OPT_FLAGS) -Weverything -Wno-declaration-after-statement -Wno-disabled-macro-expansion -Wno-extra-semi-stmt -Wno-padded -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-unsafe-buffer-usage -o $@ $< ` python3-config --ldflags --libs ` -l python$(PYVER)
+	# gcc $(CFLAGS) -Wall -Wextra -o $@ $< $(LDFLAGS)
+	clang $(CFLAGS) -Weverything -Wno-declaration-after-statement -Wno-disabled-macro-expansion -Wno-extra-semi-stmt -Wno-padded -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-unsafe-buffer-usage -o $@ $< $(LDFLAGS)
 
 run: all
 	bash run.bash
