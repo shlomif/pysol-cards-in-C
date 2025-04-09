@@ -61,3 +61,15 @@ got()
         diff -u <(expected "${i}") <(got "${i}")
     done
 )
+
+srcdir="`pwd`"
+bindir="${srcdir}/b"
+(
+    set +x
+
+    rm -fr "${bindir}"
+    mkdir -p "${bindir}"
+    cd "${bindir}"
+    cmake "${srcdir}"
+    gmake
+)
