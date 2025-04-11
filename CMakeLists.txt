@@ -6,3 +6,7 @@ SHLOMIF_COMMON_SETUP("${private_mod_path}")
 INCLUDE(GNUInstallDirs)
 
 FIND_PACKAGE(Python3 COMPONENTS Development Development.Embed)
+
+IF( NOT "${Python_Development.Embed_FOUND}" )
+    MESSAGE( WARNING "Python_Development Embed not found" )
+ENDIF()
