@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
                 pysol_cards__deal(&generator, board_string, deal_idx);
             if (ret_code)
             {
-                Py_DECREF(global_python->pModule);
+                Py_DECREF(global_python->py_module);
                 fprintf(stderr, "Cannot convert argument\n");
                 return PYSOL_CARDS__FAIL;
             }

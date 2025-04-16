@@ -18,7 +18,7 @@ enum
 
 typedef struct
 {
-    PyObject *pModule;
+    PyObject *py_module;
 } global_python_instance_type;
 
 typedef struct
@@ -31,7 +31,7 @@ static int pysol_cards__master_instance_init(
     global_python_instance_type *const global_python)
 {
     PyObject *const create_gen =
-        PyObject_GetAttrString(global_python->pModule, "create_gen");
+        PyObject_GetAttrString(global_python->py_module, "create_gen");
     /* create_gen is a new reference */
 
     if (!(create_gen && PyCallable_Check(create_gen)))
@@ -48,7 +48,7 @@ static int pysol_cards__master_instance_init(
 static int global_python_instance__release(
     global_python_instance_type *const global_python)
 {
-    Py_DECREF(global_python->pModule);
+    Py_DECREF(global_python->py_module);
 
     if (Py_FinalizeEx() < 0)
     {
@@ -77,17 +77,17 @@ static int global_python_instance__init(
 {
     Py_Initialize();
     const char *const modname = "pysol_cards_c";
-    PyObject *const pName = PyUnicode_DecodeFSDefault(modname);
-    /* Error checking of pName left out */
+    PyObject *const py_modname = PyUnicode_DecodeFSDefault(modname);
+    /* Error checking of py_modname left out */
 
-    global_python->pModule = PyImport_Import(pName);
-    if (!global_python->pModule)
+    global_python->py_module = PyImport_Import(py_modname);
+    if (!global_python->py_module)
     {
         PyErr_Print();
         fprintf(stderr, "Failed to load \"%s\"\n", modname);
         exit(PYSOL_CARDS__FAIL);
     }
-    Py_DECREF(pName);
+    Py_DECREF(py_modname);
     return PYSOL_CARDS__SUCCESS;
 }
 
@@ -100,7 +100,7 @@ static void pysol_cards__create_generator(pysol_cards__generator_type *out,
     global_python_instance_type *const global_python, PyObject *const func,
     const char *const game_variant, int msdeals)
 {
-    PyObject *const pArgs = PyTuple_New(2);
+    PyObject *const py_args = PyTuple_New(2);
     for (int i = 0; i < 2; ++i)
     {
         PyObject *const create_gen_param =
@@ -108,20 +108,20 @@ static void pysol_cards__create_generator(pysol_cards__generator_type *out,
                       : (PyLong_FromLong(msdeals)));
         if (!create_gen_param)
         {
-            Py_DECREF(pArgs);
-            Py_DECREF(global_python->pModule);
+            Py_DECREF(py_args);
+            Py_DECREF(global_python->py_module);
             fprintf(stderr, "Cannot convert argument\n");
             exit(PYSOL_CARDS__FAIL);
         }
         /* create_gen_param reference stolen here: */
-        PyTuple_SetItem(pArgs, i, create_gen_param);
+        PyTuple_SetItem(py_args, i, create_gen_param);
     }
-    PyObject *const generator_func = PyObject_CallObject(func, pArgs);
-    Py_DECREF(pArgs);
+    PyObject *const generator_func = PyObject_CallObject(func, py_args);
+    Py_DECREF(py_args);
     if (!generator_func)
     {
         Py_DECREF(func);
-        Py_DECREF(global_python->pModule);
+        Py_DECREF(global_python->py_module);
         PyErr_Print();
         fprintf(stderr, "Call failed\n");
         exit(PYSOL_CARDS__FAIL);
