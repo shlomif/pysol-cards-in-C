@@ -53,14 +53,19 @@ got()
     eval "\"${wrapperexe}\" black_hole {${s}..${e}}"
 }
 
-(
-    set +x
+run_test()
+{
+    (
+        set +x
 
-    for (( i = 0; i <= 10; i++ ))
-    do
-        diff -u <(expected "${i}") <(got "${i}")
-    done
-)
+        for (( i = 0; i <= 10; i++ ))
+        do
+            diff -u <(expected "${i}") <(got "${i}")
+        done
+    )
+}
+
+run_test
 
 srcdir="`pwd`"
 bindir="${srcdir}/b"
@@ -71,5 +76,7 @@ bindir="${srcdir}/b"
     mkdir -p "${bindir}"
     cd "${bindir}"
     cmake "${srcdir}"
-    gmake
+    gmake VERBOSE=1
 )
+wrapperexe="${bindir}/pysol_cards_wrap"
+run_test
