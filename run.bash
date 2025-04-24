@@ -7,7 +7,10 @@
 #
 
 set -e -x
-wrapperexe=./pysol_cards_wrap
+
+wrapperexe_basename="pysol_cards_wrap"
+wrapperexe_dot="./${wrapperexe_basename}"
+wrapperexe="${wrapperexe_dot}"
 
 pyp="${HOME}/.local/lib/python3.13/site-packages"
 export PYTHONPATH="`pwd`"
@@ -78,5 +81,5 @@ bindir="${srcdir}/b"
     cmake "${srcdir}"
     gmake VERBOSE=1
 )
-wrapperexe="${bindir}/pysol_cards_wrap"
+wrapperexe="${bindir}/${wrapperexe_basename}"
 run_test
