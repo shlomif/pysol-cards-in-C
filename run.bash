@@ -81,5 +81,6 @@ bindir="${srcdir}/b"
     cmake "${srcdir}"
     gmake VERBOSE=1
 )
-wrapperexe="${bindir}/${wrapperexe_basename}"
+wrapperexe_cmake="${bindir}/${wrapperexe_basename}"
+wrapperexe="${wrapperexe_cmake}"
 run_test
