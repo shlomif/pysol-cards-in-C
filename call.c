@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
                 fprintf(stderr, "Cannot convert argument\n");
                 return PYSOL_CARDS__FAIL;
             }
-            printf("%s", board_string);
+            fputs(board_string, stdout);
             if ((deal_idx & ((1 << 12) - 1)) == 0)
             {
                 fprintf(stderr, "Reached %ld\n", deal_idx);
