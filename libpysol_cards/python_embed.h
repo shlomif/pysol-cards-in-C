@@ -1,5 +1,5 @@
 /*
- * embed_python.h
+ * libpysol_cards/python_embed.h
  * Copyright (C) 2025 Shlomi Fish <shlomif@cpan.org>
  *
  * Distributed under terms of the MIT license.

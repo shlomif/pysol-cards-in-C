@@ -6,7 +6,7 @@
 //
 // Based on https://docs.python.org/3/extending/embedding.html . Thanks!
 
-#include "embed_python.h"
+#include "libpysol_cards/python_embed.h"
 #include <stdbool.h>
 #include <signal.h>
 
