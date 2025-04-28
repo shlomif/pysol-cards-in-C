@@ -71,7 +71,7 @@ run_test()
 run_test
 
 srcdir="`pwd`"
-bindir="${srcdir}/b"
+bindir="${srcdir}/../pysol-cards-in-C-build-dir-to-del"
 (
     set +x
 
