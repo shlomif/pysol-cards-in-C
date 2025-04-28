@@ -23,24 +23,24 @@ printf "%s\\n" "${PYTHONPATH}"
 
 _start()
 {
-    local deal="$1"
+    local deals_slice_index="$1"
     shift
-    printf "%d" "$(expr "$deal" '*' 5 + 1)"
+    printf "%d" "$(expr "$deals_slice_index" '*' 5 + 1)"
 }
 
 _end()
 {
-    local deal="$1"
+    local deals_slice_index="$1"
     shift
-    printf "%d" "$(expr "$deal" '*' 5 + 4)"
+    printf "%d" "$(expr "$deals_slice_index" '*' 5 + 4)"
 }
 
 expected()
 {
-    local deal="$1"
+    local deals_slice_index="$1"
     shift
-    local s="$(_start "$deal")"
-    local e="$(_end "$deal")"
+    local s="$(_start "$deals_slice_index")"
+    local e="$(_end "$deals_slice_index")"
     for (( i = s; i <= e; i++ ))
     do
         make_pysol_freecell_board.py -t "$i" black_hole
@@ -49,10 +49,10 @@ expected()
 
 got()
 {
-    local deal="$1"
+    local deals_slice_index="$1"
     shift
-    local s="$(_start "$deal")"
-    local e="$(_end "$deal")"
+    local s="$(_start "$deals_slice_index")"
+    local e="$(_end "$deals_slice_index")"
     eval "\"${wrapperexe}\" black_hole {${s}..${e}}"
 }
 
