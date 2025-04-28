@@ -63,7 +63,7 @@ run_test()
 
         for (( i = 0; i <= 10; i++ ))
         do
-            diff -u <(expected "${i}") <(got "${i}")
+            > /dev/null diff -u <(expected "${i}") <(got "${i}")
         done
     )
 }
