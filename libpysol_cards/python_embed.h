@@ -30,7 +30,7 @@ static int global_python_instance__init(
     global_python_instance_type *const global_python)
 {
     Py_Initialize();
-    const char *const modname = "pysol_cards_c";
+    const char *const modname = "pysol_cards.cwrap";
     PyObject *const py_modname = PyUnicode_DecodeFSDefault(modname);
     /* Error checking of py_modname left out */
 
