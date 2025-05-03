@@ -40,8 +40,8 @@ with PodmanClient(base_url=uri) as client:
     print(container)
     container = containers.run(image=image, detach=True,)
     print(container)
-    container.run()
-    print(container)
+    # container.run()
+    print('before exec_run', container)
     container.exec_run(['bash', '-c', 'echo helloworld', ])
 
     if False:
