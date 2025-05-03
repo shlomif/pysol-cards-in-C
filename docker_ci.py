@@ -35,6 +35,10 @@ with PodmanClient(base_url=uri) as client:
 
     image = client.images.pull('fedora:42')
     print(image)
+    containers = client.containers
+    container = containers.create(image)
+    print(container)
+    container.exec(['bash', '-c', 'echo helloworld', ])
 
     if False:
         # find all containers
