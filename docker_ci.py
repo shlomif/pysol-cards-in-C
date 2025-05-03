@@ -23,26 +23,31 @@ uri = "unix:///run/user/1000/podman/podman.sock"
 
 with PodmanClient(base_url=uri) as client:
     version = client.version()
-    print("Release: ", version["Version"])
-    print("Compatible API: ", version["ApiVersion"])
-    print("Podman API: ",
-          version["Components"][0]["Details"]["APIVersion"], "\n")
+    if False:
+        print("Release: ", version["Version"])
+        print("Compatible API: ", version["ApiVersion"])
+        print("Podman API: ",
+              version["Components"][0]["Details"]["APIVersion"], "\n")
 
-    # get all images
-    for image in client.images.list():
-        print(image, image.id, "\n")
+        # get all images
+        for image in client.images.list():
+            print(image, image.id, "\n")
 
-    # find all containers
-    for container in client.containers.list():
-        # After a list call you would probably want to reload the container
-        # to get the information about the variables such as status.
-        # Note that list() ignores the sparse option and assumes True
-        # by default.
-        container.reload()
-        print(container, container.id, "\n")
-        print(container, container.status, "\n")
+    image = client.images.pull('fedora:42')
+    print(image)
 
-        # available fields
-        print(sorted(container.attrs.keys()))
+    if False:
+        # find all containers
+        for container in client.containers.list():
+            # After a list call you would probably want to reload the container
+            # to get the information about the variables such as status.
+            # Note that list() ignores the sparse option and assumes True
+            # by default.
+            container.reload()
+            print(container, container.id, "\n")
+            print(container, container.status, "\n")
 
-    print(json.dumps(client.df(), indent=4))
+            # available fields
+            print(sorted(container.attrs.keys()))
+
+        print(json.dumps(client.df(), indent=4))
