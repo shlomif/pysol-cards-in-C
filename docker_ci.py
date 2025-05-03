@@ -39,10 +39,10 @@ with PodmanClient(base_url=uri) as client:
     container = containers.create(image)
     print(container)
     container = containers.run(image=image, detach=True,)
+    container.exec_run(cmd=['bash', '-c', 'echo helloworld', ], )
     print(container)
     # container.run()
     print('before exec_run', container)
-    container.exec_run(['bash', '-c', 'echo helloworld', ])
 
     if False:
         # find all containers
