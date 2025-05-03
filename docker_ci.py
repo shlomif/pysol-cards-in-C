@@ -38,7 +38,9 @@ with PodmanClient(base_url=uri) as client:
     containers = client.containers
     container = containers.create(image)
     print(container)
-    container = containers.run(image=image,)
+    container = containers.run(image=image, detach=True,)
+    print(container)
+    container.run()
     print(container)
     container.exec_run(['bash', '-c', 'echo helloworld', ])
 
