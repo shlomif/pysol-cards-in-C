@@ -11,6 +11,7 @@
 """
 
 import json
+# import time
 from podman import PodmanClient
 
 """Demonstrate PodmanClient."""
@@ -33,12 +34,20 @@ with PodmanClient(base_url=uri) as client:
         for image in client.images.list():
             print(image, image.id, "\n")
 
-    image = client.images.pull('fedora:42')
+    sysname = 'fedora:42'
+    pull = client.images.pull(sysname)
+    print(pull)
+    image = client.images.get(sysname)
+    # image = pull
     print(image)
     containers = client.containers
     container = containers.create(image)
     print(container)
-    container = containers.run(image=image, detach=True,)
+    container.attach(eot=4)
+    container2 = containers.run(image=image, detach=True,)
+    print(container)
+    print(container2)
+    # time.sleep(5)
     container.exec_run(cmd=['bash', '-c', 'echo helloworld', ], )
     print(container)
     # container.run()
