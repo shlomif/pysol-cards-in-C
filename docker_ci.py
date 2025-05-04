@@ -51,7 +51,7 @@ with PodmanClient(base_url=uri) as client:
     print(container2)
     # time.sleep(5)
     ret = container.exec_run(
-        cmd=['bash', '-c', 'echo helloworld', ],
+        cmd='echo helloworld',
         demux=True,
     )
     print(container)
