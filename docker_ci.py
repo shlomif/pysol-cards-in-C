@@ -41,9 +41,11 @@ with PodmanClient(base_url=uri) as client:
     # image = pull
     print(image)
     containers = client.containers
+    # container = image.create()
     container = containers.create(image)
     print(container)
-    container.attach(eot=4)
+    # container.attach(eot=4)
+    container.attach()
     container2 = containers.run(image=image, detach=True,)
     print(container)
     print(container2)
