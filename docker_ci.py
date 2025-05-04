@@ -45,13 +45,17 @@ with PodmanClient(base_url=uri) as client:
     container = containers.create(image)
     print(container)
     # container.attach(eot=4)
-    container.attach()
+    # container.attach()
     container2 = containers.run(image=image, detach=True,)
     print(container)
     print(container2)
     # time.sleep(5)
-    container.exec_run(cmd=['bash', '-c', 'echo helloworld', ], )
+    ret = container.exec_run(
+        cmd=['bash', '-c', 'echo helloworld', ],
+        demux=True,
+    )
     print(container)
+    print(ret)
     # container.run()
     print('before exec_run', container)
 
