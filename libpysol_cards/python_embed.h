@@ -54,6 +54,7 @@ static int global_python_instance__release(
     {
         return 120;
     }
+    return PYSOL_CARDS__SUCCESS;
 }
 
 static int pysol_cards__master_instance_init(
