@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     signal(SIGINT, sigint_handler);
     pysol_cards__generator_type generator;
     pysol_cards__create_generator(
-        &generator, global_python, master_instance->create_gen, argv[1], 0);
+        &generator, global_python, master_instance, argv[1], 0);
     for (int argvidx = 2; keep_running && (argvidx < argc); ++argvidx)
     {
         char *const arg = argv[argvidx];

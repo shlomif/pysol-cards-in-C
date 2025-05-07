@@ -99,7 +99,8 @@ typedef struct
 
 static void pysol_cards__create_generator(
     pysol_cards__generator_type *const out,
-    global_python_instance_type *const global_python, PyObject *const func,
+    global_python_instance_type *const global_python,
+    pysol_cards__master_instance_type *const master_instance,
     const char *const game_variant, const int msdeals)
 {
     PyObject *const py_args = PyTuple_New(2);
@@ -118,11 +119,12 @@ static void pysol_cards__create_generator(
         /* create_gen_param reference stolen here: */
         PyTuple_SetItem(py_args, i, create_gen_param);
     }
-    PyObject *const generator_func = PyObject_CallObject(func, py_args);
+    PyObject *const generator_func =
+        PyObject_CallObject(master_instance->create_gen, py_args);
     Py_DECREF(py_args);
     if (!generator_func)
     {
-        Py_DECREF(func);
+        Py_DECREF(master_instance->create_gen);
         Py_DECREF(global_python->py_module);
         PyErr_Print();
         fprintf(stderr, "Call failed\n");
