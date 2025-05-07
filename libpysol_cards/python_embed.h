@@ -100,7 +100,7 @@ typedef struct
 static void pysol_cards__create_generator(
     pysol_cards__generator_type *const out,
     global_python_instance_type *const global_python, PyObject *const func,
-    const char *const game_variant, int msdeals)
+    const char *const game_variant, const int msdeals)
 {
     PyObject *const py_args = PyTuple_New(2);
     for (int i = 0; i < 2; ++i)
