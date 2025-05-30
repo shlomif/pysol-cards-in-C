@@ -11,8 +11,31 @@
 """
 
 import json
-# import time
+import subprocess
+import sys
 from podman import PodmanClient
+
+
+class DockerWrapper:
+    """docstring for DockerWrapper"""
+    def __init__(self, arg):
+        super(DockerWrapper, self).__init__()
+        self.arg = arg
+        self.fn = "Dockerfile"
+
+    def run(self):
+        with open(self.fn, 'wt') as fh:
+            fh.write("FROM fedora:42\n")
+            fh.write("RUN echo helloworld\n")
+        subprocess.run(["podman", "build", ".",])
+
+
+d = DockerWrapper(arg=None)
+d.run()
+
+sys.exit(0)
+
+# import time
 
 """Demonstrate PodmanClient."""
 
