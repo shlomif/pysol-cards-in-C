@@ -31,8 +31,12 @@ class DockerWrapper:
             fh.write("COPY . /git\n")
             pkgs = [
                 "clang",
+                "cmake",
                 "diffutils",
+                "freecell-solver",
                 "make",
+                "perl-core",
+                "perl-devel",
                 "python3-devel",
                 "python3-pip",
                 "python3-pysol-cards",
