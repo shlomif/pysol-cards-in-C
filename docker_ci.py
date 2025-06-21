@@ -18,11 +18,11 @@ import sys
 
 class DockerWrapper:
     """docstring for DockerWrapper"""
-    def __init__(self, image_os):
+    def __init__(self, filename, image_os):
+        self.fn = filename
         self.image_os = image_os
-        self.fn = "Dockerfile"
 
-    def run(self):
+    def write_file(self):
         with open(self.fn, 'wt') as fh:
             assert re.search("\\A[A-Za-z0-9\\:_]+\\Z", self.image_os)
             fh.write("FROM {}\n".format(self.image_os))
@@ -46,10 +46,13 @@ class DockerWrapper:
             fh.write("RUN pip install --upgrade " + ' '.join(["pysol_cards"])
                      + "\n")
             fh.write("RUN set -e -x; cd /git ; gmake retest\n")
-        subprocess.run(["podman", "build", ".",])
+
+    def run(self):
+        subprocess.run(["podman", "build", "--file", self.fn, ".",])
 
 
-d = DockerWrapper(image_os="fedora:42")
+d = DockerWrapper(filename="Dockerfile", image_os="fedora:42")
+d.write_file()
 d.run()
 
 sys.exit(0)
