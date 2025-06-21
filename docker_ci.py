@@ -31,6 +31,7 @@ class DockerWrapper:
             fh.write("COPY . /git\n")
             pkgs = [
                 "clang",
+                "diffutils",
                 "make",
                 "python3-devel",
                 "python3-pip",
