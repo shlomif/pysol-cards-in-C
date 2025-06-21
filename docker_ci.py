@@ -27,6 +27,10 @@ class DockerWrapper:
             assert re.search("\\A[A-Za-z0-9\\:_]+\\Z", self.image_os)
             fh.write("FROM {}\n".format(self.image_os))
             fh.write("RUN echo helloworld\n")
+            fh.write("RUN expr 4 \\* 6\n")
+            fh.write("COPY . /git\n")
+            fh.write("RUN dnf -y install clang make python3-devel\n")
+            fh.write("RUN set -e -x; cd /git ; gmake retest\n")
         subprocess.run(["podman", "build", ".",])
 
 
