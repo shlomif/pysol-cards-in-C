@@ -29,7 +29,17 @@ class DockerWrapper:
             fh.write("RUN echo helloworld\n")
             fh.write("RUN expr 4 \\* 6\n")
             fh.write("COPY . /git\n")
-            fh.write("RUN dnf -y install clang make python3-devel\n")
+            pkgs = [
+                "clang",
+                "make",
+                "python3-devel",
+                "python3-pip",
+                "python3-pysol-cards",
+            ]
+            assert pkgs == sorted(pkgs)
+            fh.write("RUN dnf -y install " + ' '.join(pkgs) + "\n")
+            fh.write("RUN pip install --upgrade " + ' '.join(["pysol_cards"])
+                     + "\n")
             fh.write("RUN set -e -x; cd /git ; gmake retest\n")
         subprocess.run(["podman", "build", ".",])
 
