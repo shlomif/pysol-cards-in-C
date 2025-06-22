@@ -23,11 +23,15 @@ class DockerWrapper:
         self.fn = filename
         self.image_os = image_os
 
+    def _write_run(self, cmd):
+        self.dockerfile_fh.write(' '.join(["RUN"] + cmd) + "\n\n")
+
     def write_file(self):
         with open(self.fn, 'wt') as fh:
+            self.dockerfile_fh = fh
             assert re.search("\\A[A-Za-z0-9\\:_]+\\Z", self.image_os)
-            fh.write("FROM {}\n".format(self.image_os))
-            fh.write("RUN echo helloworld\n")
+            fh.write("FROM {}\n\n".format(self.image_os))
+            self._write_run(cmd=["echo", "helloworld", ])
             fh.write("RUN expr 4 \\* 6\n")
             fh.write("COPY . /git\n")
             pkgs = [
@@ -50,6 +54,7 @@ class DockerWrapper:
             if 0:
                 fh.write("ENTRYPOINT [\"/bin/sh\", \"-c\", \" set -e -x; "
                          "cd /git ; gmake retest\",]\n")
+            self.dockerfile_fh = None
 
     def run(self):
         subprocess.run(["podman", "build", "--file", self.fn, ".",])
