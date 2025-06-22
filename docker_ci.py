@@ -46,7 +46,9 @@ class DockerWrapper:
             fh.write("RUN dnf -y install " + ' '.join(pkgs) + "\n")
             fh.write("RUN pip install --upgrade " + ' '.join(["pysol_cards"])
                      + "\n")
-            fh.write("RUN set -e -x; cd /git ; gmake retest\n")
+            # fh.write("RUN set -e -x; cd /git ; gmake retest\n")
+            fh.write("ENTRYPOINT [\"/bin/sh\", \"-c\", \" set -e -x; "
+                     "cd /git ; gmake retest\",]\n")
 
     def run(self):
         subprocess.run(["podman", "build", "--file", self.fn, ".",])
