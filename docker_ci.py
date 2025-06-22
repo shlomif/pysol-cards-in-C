@@ -11,6 +11,7 @@
 """
 
 # import json
+from pathlib import Path
 import re
 import subprocess
 import sys
@@ -51,8 +52,18 @@ class DockerWrapper:
         subprocess.run(["podman", "build", "--file", self.fn, ".",])
 
 
-d = DockerWrapper(filename="Dockerfile", image_os="fedora:42")
+if False:
+    d = DockerWrapper(filename="Dockerfile", image_os="fedora:42")
+    d.write_file()
+    d.run()
+
+curdir = Path(".")
+dockerfile_dir = curdir / "hello-world-docker-action"
+dockerfile_dir.mkdir(exist_ok=True, parents=True)
+dockerfile_fn = dockerfile_dir / "Dockerfile"
+d = DockerWrapper(filename=dockerfile_fn, image_os="fedora:42")
 d.write_file()
 d.run()
+subprocess.run(["git", "add", dockerfile_fn, ])
 
 sys.exit(0)
