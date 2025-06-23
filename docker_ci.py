@@ -122,7 +122,7 @@ if False:
 
 curdir = Path(".")
 dockerfile_dir_base = "hello-world-docker-action"
-dockerfile_dir = curdir / dockerfile_dir_base
+dockerfile_dir = curdir  # / dockerfile_dir_base
 dockerfile_dir.mkdir(exist_ok=True, parents=True)
 dockerfile_bn = "Dockerfile"
 dockerfile_fn = dockerfile_dir / dockerfile_bn
