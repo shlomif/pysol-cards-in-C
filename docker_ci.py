@@ -47,7 +47,7 @@ class DockerWrapper:
                 "python3-pysol-cards",
             ]
             assert pkgs == sorted(pkgs)
-            fh.write("RUN dnf -y install " + ' '.join(pkgs) + "\n")
+            self._write_run(cmd=["dnf", "-y", "install"] + pkgs)
             fh.write("RUN pip install --upgrade " + ' '.join(["pysol_cards"])
                      + "\n")
             fh.write("RUN set -e -x; cd /git ; gmake retest\n")
