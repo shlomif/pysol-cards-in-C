@@ -7,6 +7,6 @@ jobs:
         steps:
         -   id: hellodocker
             name: docker test action step
-            uses: pysol-cards-in-c/hello-world-docker-action@v2
+            uses: pysol-cards-in-c/hello-world-docker-action
 'on':
 - push
