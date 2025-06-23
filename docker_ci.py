@@ -32,7 +32,7 @@ class DockerWrapper:
             assert re.search("\\A[A-Za-z0-9\\:_]+\\Z", self.image_os)
             fh.write("FROM {}\n\n".format(self.image_os))
             self._write_run(cmd=["echo", "helloworld", ])
-            fh.write("RUN expr 4 \\* 6\n")
+            self._write_run(cmd=["expr", "4", "'*'", "6"])
             fh.write("COPY . /git\n")
             pkgs = [
                 "clang",
