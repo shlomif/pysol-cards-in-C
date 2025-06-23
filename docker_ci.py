@@ -87,8 +87,8 @@ class DockerWrapper:
                         {
                             'id': "hellodocker",
                             'name': "docker test action step",
-                            'uses': "pysol-cards-in-c/{repodir}".format(
-                                repodir=self.dockerfile_dir_base,
+                            'uses': "shlomif/pysol-cards-in-c@master".format(
+                                # repodir=self.dockerfile_dir_base,
                             )
                         },
                     ],
