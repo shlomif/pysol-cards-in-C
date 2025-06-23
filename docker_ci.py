@@ -75,7 +75,12 @@ class DockerWrapper:
 
     def write_yaml_file(self):
         data = {
+            'description': 'pysol-cards-C docker test',
             'name': "Hello World",
+            'runs': {
+                'image': self.dockerfile_bn,
+                'using': 'docker',
+            },
         }
         _write(output_path=self.yaml_fn, data=data)
 
