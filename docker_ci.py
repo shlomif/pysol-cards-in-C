@@ -87,7 +87,7 @@ class DockerWrapper:
                         {
                             'id': "hellodocker",
                             'name': "docker test action step",
-                            'uses': "pysol-cards-in-C/{repodir}@v2".format(
+                            'uses': "pysol-cards-in-c/{repodir}@v2".format(
                                 repodir=self.dockerfile_dir_base,
                             )
                         },
@@ -102,7 +102,7 @@ class DockerWrapper:
 
     def write_yaml_file(self):
         data = {
-            'description': 'pysol-cards-C docker test',
+            'description': 'pysol-cards-c docker test',
             'name': "Hello World",
             'runs': {
                 'image': self.dockerfile_bn,
