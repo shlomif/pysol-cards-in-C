@@ -34,9 +34,13 @@ def _write(output_path, data):
 
 class DockerWrapper:
     """docstring for DockerWrapper"""
-    def __init__(self, dockerfile_bn, filename, image_os, yaml_fn):
+    def __init__(self, dockerfile_bn, dockerfile_dir_base,
+                 filename, github_workflow_fn, image_os,
+                 yaml_fn):
+        self.dockerfile_dir_base = dockerfile_dir_base
         self.dockerfile_bn = dockerfile_bn
         self.fn = filename
+        self.github_workflow_fn = github_workflow_fn
         self.image_os = image_os
         self.yaml_fn = yaml_fn
 
@@ -73,6 +77,29 @@ class DockerWrapper:
                          "cd /git ; gmake retest\",]\n")
             self.dockerfile_fh = None
 
+    def write_github_workflow_file(self):
+        data = {
+            'jobs': {
+                'hello_world_job': {
+                    'name': "A job to test docker",
+                    'runs-on': "ubuntu-latest",
+                    'steps': [
+                        {
+                            'id': "hellodocker",
+                            'name': "docker test action step",
+                            'uses': "pysol-cards-in-C/{repodir}@v2".format(
+                                repodir=self.dockerfile_dir_base,
+                            )
+                        },
+                    ],
+                },
+            },
+            'on': [
+                'push',
+            ],
+        }
+        _write(output_path=self.github_workflow_fn, data=data)
+
     def write_yaml_file(self):
         data = {
             'description': 'pysol-cards-C docker test',
@@ -94,17 +121,25 @@ if False:
     d.run()
 
 curdir = Path(".")
-dockerfile_dir = curdir / "hello-world-docker-action"
+dockerfile_dir_base = "hello-world-docker-action"
+dockerfile_dir = curdir / dockerfile_dir_base
 dockerfile_dir.mkdir(exist_ok=True, parents=True)
 dockerfile_bn = "Dockerfile"
 dockerfile_fn = dockerfile_dir / dockerfile_bn
 yaml_fn = dockerfile_dir / "action.yml"
+github_workflows_dir = curdir / ".github" / "workflows"
+github_workflows_dir.mkdir(exist_ok=True, parents=True)
+github_workflow_fn = github_workflows_dir / "main.yml"
 d = DockerWrapper(
-    dockerfile_bn=dockerfile_bn, filename=dockerfile_fn,
+    dockerfile_bn=dockerfile_bn,
+    dockerfile_dir_base=dockerfile_dir_base,
+    filename=dockerfile_fn,
+    github_workflow_fn=github_workflow_fn,
     image_os="fedora:42", yaml_fn=yaml_fn)
 d.write_file()
 d.write_yaml_file()
+d.write_github_workflow_file()
 d.run()
-subprocess.run(["git", "add", dockerfile_fn, yaml_fn, ])
+subprocess.run(["git", "add", dockerfile_fn, github_workflow_fn, yaml_fn, ])
 
 sys.exit(0)
