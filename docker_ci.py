@@ -48,9 +48,9 @@ class DockerWrapper:
             ]
             assert pkgs == sorted(pkgs)
             self._write_run(cmd=["dnf", "-y", "install"] + pkgs)
-            fh.write("RUN pip install --upgrade " + ' '.join(["pysol_cards"])
-                     + "\n")
-            fh.write("RUN set -e -x; cd /git ; gmake retest\n")
+            self._write_run(cmd=["pip", "install", "--upgrade"] +
+                            ["pysol_cards"])
+            fh.write("RUN set -e -x; cd /git ; gmake retest\n\n")
             if 0:
                 fh.write("ENTRYPOINT [\"/bin/sh\", \"-c\", \" set -e -x; "
                          "cd /git ; gmake retest\",]\n")
