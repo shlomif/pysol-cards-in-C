@@ -85,11 +85,9 @@ class DockerWrapper:
                     'runs-on': "ubuntu-latest",
                     'steps': [
                         {
-                            'id': "hellodocker",
+                            'image': self.dockerfile_bn,
                             'name': "docker test action step",
-                            'uses': "shlomif/pysol-cards-in-c@master".format(
-                                # repodir=self.dockerfile_dir_base,
-                            )
+                            'using': 'docker',
                         },
                     ],
                 },
@@ -124,7 +122,7 @@ curdir = Path(".")
 dockerfile_dir_base = "hello-world-docker-action"
 dockerfile_dir = curdir  # / dockerfile_dir_base
 dockerfile_dir.mkdir(exist_ok=True, parents=True)
-dockerfile_bn = "Dockerfile"
+dockerfile_bn = "Dockerfile.standalone"
 dockerfile_fn = dockerfile_dir / dockerfile_bn
 yaml_fn = dockerfile_dir / "action.yml"
 github_workflows_dir = curdir / ".github" / "workflows"
@@ -137,9 +135,9 @@ d = DockerWrapper(
     github_workflow_fn=github_workflow_fn,
     image_os="fedora:42", yaml_fn=yaml_fn)
 d.write_file()
-d.write_yaml_file()
+# d.write_yaml_file()
 d.write_github_workflow_file()
 d.run()
-subprocess.run(["git", "add", dockerfile_fn, github_workflow_fn, yaml_fn, ])
+subprocess.run(["git", "add", dockerfile_fn, github_workflow_fn, ])
 
 sys.exit(0)

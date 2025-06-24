@@ -5,8 +5,8 @@ jobs:
         name: A job to test docker
         runs-on: ubuntu-latest
         steps:
-        -   id: hellodocker
+        -   image: Dockerfile.standalone
             name: docker test action step
-            uses: shlomif/pysol-cards-in-c@master
+            using: docker
 'on':
 - push
