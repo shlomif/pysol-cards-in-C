@@ -6,6 +6,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         -   name: docker test action step
-            uses: Dockerfile.standalone
+            uses: ./Dockerfile.standalone
 'on':
 - push
