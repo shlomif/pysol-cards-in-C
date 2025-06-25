@@ -34,11 +34,13 @@ def _write(output_path, data):
 
 class DockerWrapper:
     """docstring for DockerWrapper"""
-    def __init__(self, dockerfile_bn, dockerfile_dir_base,
+    def __init__(self, dockerfile_bn, dockerfile_dir,
+                 dockerfile_fn,
                  filename, github_workflow_fn, image_os,
                  yaml_fn):
-        self.dockerfile_dir_base = dockerfile_dir_base
+        self.dockerfile_dir = dockerfile_dir
         self.dockerfile_bn = dockerfile_bn
+        self.dockerfile_fn = dockerfile_fn
         self.fn = filename
         self.github_workflow_fn = github_workflow_fn
         self.image_os = image_os
@@ -48,7 +50,7 @@ class DockerWrapper:
         self.dockerfile_fh.write(' '.join(["RUN"] + cmd) + "\n\n")
 
     def write_file(self):
-        with open(self.fn, 'wt') as fh:
+        with open(self.dockerfile_fn, 'wt') as fh:
             self.dockerfile_fh = fh
             assert re.search("\\A[A-Za-z0-9\\:_]+\\Z", self.image_os)
             fh.write("FROM {}\n\n".format(self.image_os))
@@ -87,7 +89,7 @@ class DockerWrapper:
                         {
                             # 'image': self.dockerfile_bn,
                             'name': "docker test action step",
-                            'uses': ("./" + self.dockerfile_bn),
+                            'uses': ("./" + str(self.dockerfile_dir)),
                             # 'uses': 'docker',
                         },
                     ],
@@ -120,10 +122,10 @@ if False:
     d.run()
 
 curdir = Path(".")
-dockerfile_dir_base = "hello-world-docker-action"
-dockerfile_dir = curdir  # / dockerfile_dir_base
+dockerfile_dir_base = "my-gh-actions-ci"
+dockerfile_dir = curdir / dockerfile_dir_base
 dockerfile_dir.mkdir(exist_ok=True, parents=True)
-dockerfile_bn = "Dockerfile.standalone"
+dockerfile_bn = "Dockerfile"
 dockerfile_fn = dockerfile_dir / dockerfile_bn
 yaml_fn = dockerfile_dir / "action.yml"
 github_workflows_dir = curdir / ".github" / "workflows"
@@ -131,7 +133,8 @@ github_workflows_dir.mkdir(exist_ok=True, parents=True)
 github_workflow_fn = github_workflows_dir / "main.yml"
 d = DockerWrapper(
     dockerfile_bn=dockerfile_bn,
-    dockerfile_dir_base=dockerfile_dir_base,
+    dockerfile_dir=dockerfile_dir,
+    dockerfile_fn=dockerfile_fn,
     filename=dockerfile_fn,
     github_workflow_fn=github_workflow_fn,
     image_os="fedora:42", yaml_fn=yaml_fn)
