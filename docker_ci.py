@@ -87,7 +87,7 @@ class DockerWrapper:
                         {
                             'image': self.dockerfile_bn,
                             'name': "docker test action step",
-                            'using': 'docker',
+                            'uses': 'docker',
                         },
                     ],
                 },

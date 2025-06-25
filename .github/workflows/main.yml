@@ -7,6 +7,6 @@ jobs:
         steps:
         -   image: Dockerfile.standalone
             name: docker test action step
-            using: docker
+            uses: docker
 'on':
 - push
