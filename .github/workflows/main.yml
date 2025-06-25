@@ -5,8 +5,7 @@ jobs:
         name: A job to test docker
         runs-on: ubuntu-latest
         steps:
-        -   image: Dockerfile.standalone
-            name: docker test action step
-            uses: docker
+        -   name: docker test action step
+            uses: Dockerfile.standalone
 'on':
 - push

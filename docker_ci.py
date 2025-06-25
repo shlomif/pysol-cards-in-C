@@ -85,9 +85,10 @@ class DockerWrapper:
                     'runs-on': "ubuntu-latest",
                     'steps': [
                         {
-                            'image': self.dockerfile_bn,
+                            # 'image': self.dockerfile_bn,
                             'name': "docker test action step",
-                            'uses': 'docker',
+                            'uses': self.dockerfile_bn,
+                            # 'uses': 'docker',
                         },
                     ],
                 },
