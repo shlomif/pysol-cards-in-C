@@ -87,6 +87,12 @@ class DockerWrapper:
                     'runs-on': "ubuntu-latest",
                     'steps': [
                         {
+                            "uses": ("actions/checkout@v2"),
+                            "with": {
+                                "submodules": "true",
+                            },
+                        },
+                        {
                             # 'image': self.dockerfile_bn,
                             'name': "docker test action step",
                             'uses': ("./" + str(self.dockerfile_dir)),

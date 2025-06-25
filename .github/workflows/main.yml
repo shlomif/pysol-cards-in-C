@@ -5,6 +5,9 @@ jobs:
         name: A job to test docker
         runs-on: ubuntu-latest
         steps:
+        -   uses: actions/checkout@v2
+            with:
+                submodules: 'true'
         -   name: docker test action step
             uses: ./my-gh-actions-ci
 'on':
